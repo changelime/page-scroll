@@ -1,0 +1,146 @@
+body,html{
+  margin:0px;
+  padding:0px;
+  width:100%;
+  /*height:100%;*/
+}
+.wrapper
+{
+  width:100%;
+  overflow: hidden;
+  /*height:100%;*/
+}
+.wrapper>ul
+{
+  margin:0px;
+  padding:0px;
+  width:100%;
+  height:100%;
+  position:relative;
+  list-style-type: none;
+}
+.wrapper>ul>.page
+{
+  width:100vw;
+  height:100vh;
+  display: block;
+  position:relative;
+  top:0px;
+  left:0px;
+}
+
+.wrapper>ul>.page>img
+{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  -webkit-transition:all 1s;
+  -moz-transition:all 1s;
+  -ms-transition:all 1s;
+  -webkit-transition:all 1s;
+  transition:all 1s;
+}
+
+.wrapper>ul>.pageOut>img
+{
+  z-index: 1;
+}
+.wrapper>ul>.pageOut>img:nth-of-type(1)
+{
+  top:-100%;
+  left: 100%;
+}
+.wrapper>ul>.pageOut>img:nth-of-type(2)
+{
+  top:100%;
+  left: -100%;
+}
+.wrapper>ul>.page:nth-of-type(1)
+{
+  z-index:5;
+}
+.wrapper>ul>.page:nth-of-type(2)
+{
+  z-index:4;
+}
+.wrapper>ul>.page:nth-of-type(3)
+{
+  z-index:3;
+}
+.wrapper>ul>.page:nth-of-type(4)
+{
+  z-index:2;
+}
+.wrapper>ul>.page:nth-of-type(5)
+{
+  z-index:1;
+}
+/***********每个页面的内容样式**************/
+.wrapper>ul>.page>.content
+{
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+  font-size: 30px;
+  /*line-height: 100vh;*/
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+.wrapper>ul>.page>.content>a
+{
+  color: white;
+  text-decoration: none;
+  border-bottom: white 1px dashed;
+  font-size: 50px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+.wrapper>ul>.page:nth-of-type(1)>.content
+{
+  background-color:#EF3D6C;
+  line-height: 33.333vh;
+}
+.wrapper>ul>.page:nth-of-type(1)>.content>h1
+{
+  margin: 0px;
+  padding: 0px;
+}
+.wrapper>ul>.page:nth-of-type(1)>.content>h3
+{
+  margin: 0px;
+  padding: 0px;
+}
+.wrapper>ul>.page:nth-of-type(1)>.content>h5
+{
+  margin: 0px;
+  padding: 0px;
+}
+.wrapper>ul>.page:nth-of-type(2)>.content
+{
+  background-color:#34BEA7;
+  line-height: 100vh;
+}
+.wrapper>ul>.page:nth-of-type(3)>.content
+{
+  background-color:#EFCC58;
+  line-height: 100vh;
+}
+.wrapper>ul>.page:nth-of-type(4)>.content
+{
+  background-color:#F1568D;
+  line-height: 100vh;
+}
+.wrapper>ul>.page:nth-of-type(5)>.content
+{
+  background-color:#F3805A;
+  background-image: url("../img/github.png");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: 100px 100px;
+  line-height: 100vh;
+}
