@@ -4,6 +4,7 @@
 主要基于[html2canvas](https://github.com/niklasvh/html2canvas)生成整个页面的"截图"，再对生成的canvas分解。
 
 [demo](http://github.czli.me/page-scroll)
+需要等待完全加载完毕才能操作（滚动条消失），不然会错位
 
 # License
 The MIT License (MIT)
