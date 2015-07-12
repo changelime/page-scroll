@@ -2,6 +2,7 @@
 var count = $(".page").length;
 var width = $(window).width();
 var height = $(window).height();
+var pageIndex = 0;
 /*
   截取图像
 */
@@ -20,6 +21,29 @@ var clip = function(item, lineTo){
 	ctx.globalCompositeOperation = "destination-out";
 	ctx.fill();
 };
+var IsDone = (function(){
+	function IsDone(){
+		this.count = 0;
+		this.waiting = false;
+	}
+	IsDone.prototype.done = function() {
+		this.count = (this.count+1) % ($(".page").length -1);
+		if(this.count === 0)
+		{
+			this.waiting = false;
+			$("#flag").text("计算完成");
+		}
+		else
+			$("#flag").text("计算中：" + this.count);
+	};
+	IsDone.prototype.isDone = function(){
+		if(this.count === 0)
+			return true;
+		else
+			return false;
+	};
+	return new IsDone();
+}());
 var getShots = function(index){
 	html2canvas($(".page")[index], {
 		onrendered: function(canvas) {
@@ -39,13 +63,18 @@ var getShots = function(index){
 			});
 			$(".page").eq(index).append('<img class="imgLeft" src="'+leftCanvas.toDataURL()+'" />');
 			$(".page").eq(index).append('<img class="imgRight" src="'+rightCanvas.toDataURL()+'" />');   
+			IsDone.done();
 		}
 	});
 };
 var printShots = function(){
 	width = $(window).width();
 	height = $(window).height();
+	$(".page").removeClass("pageOut");
+	$(".page").css({"display":"block"});
+	$(".page>.content").css({"display":"block"});
 	$(".page img").remove();
+	pageIndex = 0;
 	for(var i = 0; i<count-1; i++)
 		getShots(i);
 };
@@ -54,44 +83,55 @@ printShots();
   绑定事件
 */
 (function(){
-  var index = 0;
-  var time = new Date().getTime();
-  var canRun = function(){
-    var now = new Date().getTime();
-    if( now - time > 1200 )
-    {
-      time = now;
-      return true;
-    }
-    else
-      return false;
-  };
-  $(window).on("resize", null, printShots);
-  $("body").on("mousewheel", null, function(event){
-    var flag = canRun();
-    var d = event.deltaY;
-    var page = null;
-    if( flag && d < 0 && index < (count-1))//向下滚动index递增
-    {
-      page =  $(".page").eq(index++);
-      page.find(".content").css("display","none");
-      page.addClass("pageOut");
-      setTimeout(function(){
-        page.css("display","none");
-      },1000);
-    }
-    else if( flag && d > 0 && index > 0)//向上滚动index递减
-    {
-      page =  $(".page").eq(--index);
-      page.css("display","block");
-      setTimeout(function(){
-        page.removeClass("pageOut");
-      },20);
-      setTimeout(function(){
-        page.find(".content").css("display","block");
-      },1000);
-    }
-  });
+	var canRun = (function(){
+		var time = new Date().getTime();
+		var canRun = function(){
+			var now = new Date().getTime();
+			if( now - time > 1200 )
+			{
+				time = now;
+				return true;
+			}
+			else
+				return false;
+		};
+		return canRun;
+	}());
+	var id = 0;
+	$(window).on("resize", null, function(event){
+		$("#flag").text("等待重新计算");
+		IsDone.waiting = true;
+		clearTimeout(id);
+		id = setTimeout(function(){
+			if(IsDone.isDone())
+				printShots();
+		},1500);
+	});
+	$("body").on("mousewheel", null, function(event){
+		var flag = canRun();
+		var d = event.deltaY;
+		var page = null;
+		if( !IsDone.waiting && IsDone.isDone() && flag && d < 0 && pageIndex < (count-1))//向下滚动index递增
+		{
+			page =  $(".page").eq(pageIndex++);
+			page.find(".content").css("display","none");
+			page.addClass("pageOut");
+			setTimeout(function(){
+				page.css("display","none");
+			},1000);
+		}
+		else if( !IsDone.waiting &&  IsDone.isDone() && flag && d > 0 && pageIndex > 0)//向上滚动index递减
+		{
+			page =  $(".page").eq(--pageIndex);
+			page.css("display","block");
+			setTimeout(function(){
+				page.removeClass("pageOut");
+			},20);
+			setTimeout(function(){
+				page.find(".content").css("display","block");
+			},1000);
+		}
+	});
 }());
 
 }($));
