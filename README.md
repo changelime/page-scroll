@@ -1,10 +1,15 @@
 # page-scroll
 # 一个单屏页面切换效果
 
-主要基于[html2canvas](https://github.com/niklasvh/html2canvas)生成整个页面的"截图"，再对生成的canvas分解。
+主要基于[html2canvas](https://github.com/niklasvh/html2canvas)，分别生成每个页面的"截图"，再对生成的canvas分解。
+
+~~主要基于[html2canvas](https://github.com/niklasvh/html2canvas)生成整个页面的"截图"，再对生成的canvas分解。~~
+
+~~需要等待完全加载完毕才能操作（滚动条消失），不然会错位~~
+
+=================
 
 [demo](http://github.czli.me/page-scroll)
-需要等待完全加载完毕才能操作（滚动条消失），不然会错位
 
 ![Alt text](http://i.imgur.com/PjEaJ8P.jpg)
 ![Alt text](http://i.imgur.com/zWLvfcS.jpg)
