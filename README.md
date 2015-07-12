@@ -6,6 +6,10 @@
 [demo](http://github.czli.me/page-scroll)
 需要等待完全加载完毕才能操作（滚动条消失），不然会错位
 
+![Alt text](http://i.imgur.com/PjEaJ8P.jpg)
+![Alt text](http://i.imgur.com/zWLvfcS.jpg)
+![Alt text](http://i.imgur.com/pQyz5Xr.jpg)
+
 # License
 The MIT License (MIT)
 
