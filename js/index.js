@@ -1,57 +1,55 @@
 (function(){
 var count = $(".page").length;
+var width = $(window).width();
+var height = $(window).height();
 /*
   截取图像
 */
-html2canvas(document.body, {
-  onrendered: function(canvas) {
-    $(".page").css({
-      "position":"absolute"
-    });
-    $(".wrapper").css({
-      "height":"100vh"
-    });
-    var getCanvas = function(y, width, height){
-      var item = document.createElement("canvas");
-      var context = item.getContext("2d");
-      item.width = width;
-      item.height = height;
-      context.drawImage(canvas, 0, y, width, height, 0, 0, width, height);
-      return item;
-    };
-    var clip = function(item, lineTo){
-      var ctx = item.getContext("2d");
-      ctx.beginPath();
-      lineTo(ctx);
-      ctx.globalCompositeOperation = "destination-out";
-      ctx.fill();
-    };
-    var width = $(window).width();
-    var height = $(window).height();
-    for(var i = 0; i<(count-1); i++)
-    {
-      (function(i){
-          var y = i * height;
-          var leftCanvas = getCanvas(y, width, height);
-          var rightCanvas = getCanvas(y, width, height);
-          clip(leftCanvas, function(ctx){//把右边三角切掉！
-            ctx.moveTo(0, height);
-            ctx.lineTo(width, 0);
-            ctx.lineTo(width, height);
-            ctx.lineTo(0, height);
-          });
-          clip(rightCanvas, function(ctx){//把左边三角切掉！
-            ctx.moveTo(0, 0);
-            ctx.lineTo(width, 0);
-            ctx.lineTo(0, height);
-            ctx.lineTo(0, 0);
-          });
-          $(".page").eq(i).append('<img class="imgLeft" src="'+leftCanvas.toDataURL()+'" />');
-          $(".page").eq(i).append('<img class="imgRight" src="'+rightCanvas.toDataURL()+'" />');   
-      }(i));
-    }
-  }
-});
+var cloneCanvas = function(canvas){
+	var item = document.createElement("canvas");
+	var context = item.getContext("2d");
+	item.width = width;
+	item.height = height;
+	context.drawImage(canvas, 0, 0);
+	return item;
+};
+var clip = function(item, lineTo){
+	var ctx = item.getContext("2d");
+	ctx.beginPath();
+	lineTo(ctx);
+	ctx.globalCompositeOperation = "destination-out";
+	ctx.fill();
+};
+var getShots = function(index){
+	html2canvas($(".page")[index], {
+		onrendered: function(canvas) {
+			var leftCanvas = canvas;
+          	var rightCanvas = cloneCanvas(canvas);
+			clip(leftCanvas, function(ctx){//把右边三角切掉！
+				ctx.moveTo(0, height);
+				ctx.lineTo(width, 0);
+				ctx.lineTo(width, height);
+				ctx.lineTo(0, height);
+			});
+			clip(rightCanvas, function(ctx){//把左边三角切掉！
+				ctx.moveTo(0, 0);
+				ctx.lineTo(width, 0);
+				ctx.lineTo(0, height);
+				ctx.lineTo(0, 0);
+			});
+			$(".page").eq(index).append('<img class="imgLeft" src="'+leftCanvas.toDataURL()+'" />');
+			$(".page").eq(index).append('<img class="imgRight" src="'+rightCanvas.toDataURL()+'" />');   
+		}
+	});
+};
+var printShots = function(){
+	width = $(window).width();
+	height = $(window).height();
+	$(".page img").remove();
+	for(var i = 0; i<count-1; i++)
+		getShots(i);
+};
+printShots();
 /*
   绑定事件
 */
@@ -68,6 +66,7 @@ html2canvas(document.body, {
     else
       return false;
   };
+  $(window).on("resize", null, printShots);
   $("body").on("mousewheel", null, function(event){
     var flag = canRun();
     var d = event.deltaY;
