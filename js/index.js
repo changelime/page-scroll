@@ -1,4 +1,4 @@
-(function(){
+$(document).ready(function() {
 var count = $(".page").length;
 var width = $(window).width();
 var height = $(window).height();
@@ -44,7 +44,7 @@ var IsDone = (function(){
 	};
 	return new IsDone();
 }());
-var getShots = function(index){
+var getShots = function(index, sigle){
 	html2canvas($(".page")[index], {
 		onrendered: function(leftCanvas) {
           	var rightCanvas = cloneCanvas(leftCanvas);
@@ -63,7 +63,7 @@ var getShots = function(index){
 			});
 			page.append($(leftCanvas).addClass("canvasLeft"));
 			page.append($(rightCanvas).addClass("canvasRight"));   
-			IsDone.done();
+			!sigle&&IsDone.done();
 		}
 	});
 };
@@ -76,7 +76,7 @@ var printShots = function(){
 	$(".page canvas").remove();
 	pageIndex = 0;
 	for(var i = 0; i<count-1; i++)
-		getShots(i);
+		getShots(i, false);
 };
 printShots();
 /*
@@ -107,6 +107,15 @@ printShots();
 				printShots();
 		},1500);
 	});
+	var confirm = function(){
+		var page = $(".page").eq(pageIndex);
+		var canvas = page.find("canvas");
+		if( canvas[0].width !== canvas[1].width && canvas[0].width !== width )
+		{
+			canvas.remove();
+			getShots(pageIndex, true);
+		}
+	};
 	$("body").on("mousewheel", null, function(event){
 		var flag = canRun();
 		var d = event.deltaY;
@@ -131,7 +140,8 @@ printShots();
 				page.find(".content").css("display","block");
 			},1000);
 		}
+		confirm();
 	});
 }());
 
-}($));
+});
