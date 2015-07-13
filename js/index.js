@@ -46,9 +46,9 @@ var IsDone = (function(){
 }());
 var getShots = function(index){
 	html2canvas($(".page")[index], {
-		onrendered: function(canvas) {
-			var leftCanvas = canvas;
-          	var rightCanvas = cloneCanvas(canvas);
+		onrendered: function(leftCanvas) {
+          	var rightCanvas = cloneCanvas(leftCanvas);
+          	var page = $(".page").eq(index);
 			clip(leftCanvas, function(ctx){//把右边三角切掉！
 				ctx.moveTo(0, height);
 				ctx.lineTo(width, 0);
@@ -61,8 +61,8 @@ var getShots = function(index){
 				ctx.lineTo(0, height);
 				ctx.lineTo(0, 0);
 			});
-			$(".page").eq(index).append('<img class="imgLeft" src="'+leftCanvas.toDataURL()+'" />');
-			$(".page").eq(index).append('<img class="imgRight" src="'+rightCanvas.toDataURL()+'" />');   
+			page.append($(leftCanvas).addClass("canvasLeft"));
+			page.append($(rightCanvas).addClass("canvasRight"));   
 			IsDone.done();
 		}
 	});
@@ -73,7 +73,7 @@ var printShots = function(){
 	$(".page").removeClass("pageOut");
 	$(".page").css({"display":"block"});
 	$(".page>.content").css({"display":"block"});
-	$(".page img").remove();
+	$(".page canvas").remove();
 	pageIndex = 0;
 	for(var i = 0; i<count-1; i++)
 		getShots(i);

@@ -38,7 +38,7 @@ body,html{
   left:0px;
 }
 
-.wrapper>ul>.page>img
+.wrapper>ul>.page>canvas
 {
   position: absolute;
   top: 0px;
@@ -50,16 +50,16 @@ body,html{
   transition:all 1s;
 }
 
-.wrapper>ul>.pageOut>img
+.wrapper>ul>.pageOut>canvas
 {
   z-index: 1;
 }
-.wrapper>ul>.pageOut>img:nth-of-type(1)
+.wrapper>ul>.pageOut>canvas:nth-of-type(1)
 {
   top:-100%;
   left: 100%;
 }
-.wrapper>ul>.pageOut>img:nth-of-type(2)
+.wrapper>ul>.pageOut>canvas:nth-of-type(2)
 {
   top:100%;
   left: -100%;
