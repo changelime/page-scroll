@@ -110,7 +110,7 @@ printShots();
 	var confirm = function(){
 		var page = $(".page").eq(pageIndex);
 		var canvas = page.find("canvas");
-		if( canvas[0].width !== canvas[1].width && canvas[0].width !== width )
+		if( canvas[0].width !== canvas[1].width || canvas[0].height !== canvas[1].height ||  canvas[0].width !== width || canvas[0].height !== height )
 		{
 			canvas.remove();
 			getShots(pageIndex, true);
