@@ -110,17 +110,16 @@ printShots();
 	var confirm = function(){
 		var page = $(".page").eq(pageIndex);
 		var canvas = page.find("canvas");
-		if( canvas[0].width !== canvas[1].width || canvas[0].height !== canvas[1].height ||  canvas[0].width !== width || canvas[0].height !== height )
+		if( (canvas.length > 0) && ( canvas[0].width !== canvas[1].width || canvas[0].height !== canvas[1].height ||  canvas[0].width !== width || canvas[0].height !== height ) )
 		{
 			canvas.remove();
 			getShots(pageIndex, true);
 		}
 	};
-	$("body").on("mousewheel", null, function(event){
+	var scroll = function(event){
 		var flag = canRun();
-		var d = event.deltaY;
 		var page = null;
-		if( !IsDone.waiting && IsDone.isDone() && flag && d < 0 && pageIndex < (count-1))//向下滚动index递增
+		if( !IsDone.waiting && IsDone.isDone() && flag && (event.deltaY < 0 || event.keyCode === 40 || event.keyCode === 39) && pageIndex < (count-1))//向下滚动index递增
 		{
 			page =  $(".page").eq(pageIndex++);
 			page.find(".content").css("display","none");
@@ -129,7 +128,7 @@ printShots();
 				page.css("display","none");
 			},1000);
 		}
-		else if( !IsDone.waiting &&  IsDone.isDone() && flag && d > 0 && pageIndex > 0)//向上滚动index递减
+		else if( !IsDone.waiting &&  IsDone.isDone() && flag && (event.deltaY > 0 || event.keyCode === 38 || event.keyCode === 37) && pageIndex > 0)//向上滚动index递减
 		{
 			page =  $(".page").eq(--pageIndex);
 			page.css("display","block");
@@ -141,7 +140,8 @@ printShots();
 			},1000);
 		}
 		confirm();
-	});
+	};
+	$("body").on("mousewheel keydown", null, scroll);
 }());
 
 });
